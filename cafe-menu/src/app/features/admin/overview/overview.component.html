@@ -1,0 +1,37 @@
+<!-- VISÃO GERAL -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Categorias</div>
+    <div class="stat-value">{{ stats().categories }}</div>
+    <div class="stat-sub">{{ stats().activeCategories }} ativas</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Itens</div>
+    <div class="stat-value">{{ stats().items }}</div>
+    <div class="stat-sub">no cardápio</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Itens ativos</div>
+    <div class="stat-value">{{ stats().activeItems }}</div>
+    <div class="stat-sub">visíveis</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Em promoção</div>
+    <div class="stat-value">{{ stats().promoItems }}</div>
+    <div class="stat-sub">itens</div>
+  </div>
+</div>
+
+<div class="overview-cats">
+  <div class="overview-cats-header">Categorias do Cardápio</div>
+  <div *ngFor="let cat of categoriesWithCount()" class="overview-row">
+    <span class="overview-row-name">{{ cat.name }}</span>
+    <span class="overview-row-count">{{ cat.itemCount }} {{ cat.itemCount === 1 ? 'item' : 'itens' }}</span>
+    <span [class]="cat.active ? 'badge badge-active' : 'badge badge-inactive'">
+      {{ cat.active ? 'ATIVO' : 'INATIVO' }}
+    </span>
+  </div>
+  <p *ngIf="categoriesWithCount().length === 0" style="text-align:center;color:var(--muted);padding:24px;font-size:13px">
+    Nenhuma categoria cadastrada
+  </p>
+</div>

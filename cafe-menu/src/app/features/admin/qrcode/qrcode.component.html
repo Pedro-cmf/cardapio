@@ -1,0 +1,21 @@
+<!-- QR CODE -->
+<div class="qr-wrap">
+  <div class="qr-box">
+    <div class="qr-label">Cardápio Online</div>
+    <qrcode
+      *ngIf="menuUrl()"
+      [qrdata]="menuUrl()"
+      [width]="180"
+      [errorCorrectionLevel]="'M'"
+      [elementType]="'canvas'"
+    ></qrcode>
+    <div class="qr-url" *ngIf="menuUrl()">{{ menuUrl() }}</div>
+    <button
+      *ngIf="menuUrl()"
+      class="btn btn-primary"
+      style="width:100%"
+      (click)="downloadQR()">
+      Baixar QR Code
+    </button>
+  </div>
+</div>

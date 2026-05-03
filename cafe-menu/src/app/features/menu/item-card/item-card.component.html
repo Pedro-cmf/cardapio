@@ -1,0 +1,24 @@
+<div class="item-card">
+  <img
+    *ngIf="item.image_url"
+    [src]="item.image_url"
+    [alt]="item.name"
+    class="item-img"
+    loading="lazy"
+  />
+  <div class="item-info">
+    <div class="item-header">
+      <span class="item-name">{{ item.name }}</span>
+      <div class="item-price-block">
+        <span *ngIf="item.is_promotion" class="price-original">
+          R${{ item.price | number:'1.2-2' }}
+        </span>
+        <span class="price-current" [class.promo]="item.is_promotion">
+          R${{ (item.is_promotion ? item.promotion_price : item.price) | number:'1.2-2' }}
+        </span>
+        <span *ngIf="item.is_promotion" class="promo-badge">Promoção</span>
+      </div>
+    </div>
+    <p *ngIf="item.description" class="item-desc">{{ item.description }}</p>
+  </div>
+</div>

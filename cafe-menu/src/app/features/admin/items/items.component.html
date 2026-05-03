@@ -1,0 +1,190 @@
+<!-- ITENS -->
+<div class="items-header">
+  <h2>Itens do Cardápio</h2>
+  <button class="btn btn-primary" (click)="openModal()" [disabled]="!selectedCatId()">
+    + Novo Item
+  </button>
+</div>
+
+<div class="filter-section">
+  <label for="filter">Filtrar por categoria:</label>
+  <select
+    id="filter"
+    [value]="filterCatId()"
+    (change)="filterCatId.set($any($event.target).value)">
+    <option value="">Todas as categorias</option>
+    <option *ngFor="let cat of categories()" [value]="cat.id">{{ cat.name }}</option>
+  </select>
+</div>
+
+<div class="items-list">
+  <div *ngFor="let item of filteredItems()" class="item-card">
+    <img
+      *ngIf="item.image_url"
+      [src]="item.image_url"
+      [alt]="item.name"
+      class="item-thumbnail"
+      loading="lazy"
+    />
+    <div class="item-info">
+      <div class="item-main">
+        <h3 class="item-name">{{ item.name }}</h3>
+        <div class="item-badges">
+          <span [class]="item.active ? 'badge badge-active' : 'badge badge-inactive'">
+            {{ item.active ? 'ATIVO' : 'INATIVO' }}
+          </span>
+          <span *ngIf="item.is_promotion" class="badge badge-promo">
+            PROMOÇÃO
+          </span>
+        </div>
+      </div>
+      <p *ngIf="item.description" class="item-description">{{ item.description }}</p>
+      <div class="item-meta">
+        <span class="item-category">{{ getCategoryName(item.category_id) }}</span>
+        <span class="item-price">{{ formatPrice(item.price) }}</span>
+        <span *ngIf="item.is_promotion && item.promotion_price" class="item-promo-price">
+          Promo: {{ formatPrice(item.promotion_price) }}
+        </span>
+      </div>
+    </div>
+    <div class="item-actions">
+      <button class="btn-secondary" (click)="openModal(item)">Editar</button>
+      <button class="btn-secondary" (click)="toggleActive(item)">
+        {{ item.active ? 'Desativar' : 'Ativar' }}
+      </button>
+      <button class="btn-danger" (click)="delete(item.id)">Excluir</button>
+    </div>
+  </div>
+
+  <p *ngIf="filteredItems().length === 0 && !filterCatId()" class="empty-state">
+    Nenhum item cadastrado. Selecione uma categoria e clique em "Novo Item".
+  </p>
+  <p *ngIf="filteredItems().length === 0 && filterCatId()" class="empty-state">
+    Nenhum item nesta categoria.
+  </p>
+</div>
+
+<!-- MODAL -->
+<div *ngIf="showModal()" class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ editingId() ? 'Editar' : 'Novo' }} Item</h3>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="modal-body">
+        <div class="form-field">
+          <label for="category">Categoria *</label>
+          <select
+            id="category"
+            [value]="selectedCatId()"
+            (change)="selectedCatId.set($any($event.target).value)"
+            required>
+            <option value="">Selecione uma categoria</option>
+            <option *ngFor="let cat of categories()" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="name">Nome do Item *</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              placeholder="ex: Espresso Duplo"
+              autofocus
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="price">Preço (R$) *</label>
+            <input
+              id="price"
+              type="text"
+              [value]="priceDisplay()"
+              (input)="onPriceInput($event)"
+              placeholder="0,00"
+            />
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="description">Descrição</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            placeholder="Descrição do item (opcional)"
+            rows="3"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label>Imagem</label>
+          <div *ngIf="imagePreview()" class="image-preview-container">
+            <img [src]="imagePreview()" alt="Preview" class="image-preview">
+          </div>
+          <div class="image-input-row">
+            <input
+              id="image"
+              type="text"
+              formControlName="image_url"
+              placeholder="https://exemplo.com/imagem.jpg"
+              (input)="onImageUrlInput($event)"
+            />
+            <label class="btn-upload" [class.uploading]="uploadingImage()">
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                (change)="onImageFileChange($event)"
+                [disabled]="uploadingImage()"
+              />
+              {{ uploadingImage() ? 'Enviando...' : 'Upload' }}
+            </label>
+          </div>
+        </div>
+
+        <div class="form-field-checkbox">
+          <input
+            id="active"
+            type="checkbox"
+            formControlName="active"
+          />
+          <label for="active">Item ativo (visível no cardápio)</label>
+        </div>
+
+        <div class="form-field-checkbox">
+          <input
+            id="promo"
+            type="checkbox"
+            formControlName="is_promotion"
+          />
+          <label for="promo">Item em promoção</label>
+        </div>
+
+        <div *ngIf="form.value.is_promotion" class="form-field">
+          <label for="promo-price">Preço Promocional (R$)</label>
+          <input
+            id="promo-price"
+            type="text"
+            [value]="promoPriceDisplay()"
+            (input)="onPromoPriceInput($event)"
+            placeholder="0,00"
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading() || uploadingImage() || form.invalid || !selectedCatId()">
+          {{ loading() ? 'Salvando...' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

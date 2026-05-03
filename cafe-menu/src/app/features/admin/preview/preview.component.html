@@ -1,0 +1,29 @@
+<!-- PREVIEW -->
+<div class="preview-header">
+  <h2>Preview do Cardápio</h2>
+  <div class="preview-controls">
+    <div class="view-toggle">
+      <button
+        [class.active]="viewMode() === 'desktop'"
+        (click)="setViewMode('desktop')">
+        Desktop
+      </button>
+      <button
+        [class.active]="viewMode() === 'mobile'"
+        (click)="setViewMode('mobile')">
+        Mobile
+      </button>
+    </div>
+    <button class="btn-refresh" (click)="refreshPreview()">
+      🔄 Atualizar
+    </button>
+  </div>
+</div>
+
+<div class="preview-container" [class.mobile-view]="viewMode() === 'mobile'">
+  <iframe
+    #previewFrame
+    [src]="menuUrl"
+    frameborder="0"
+    title="Preview do Cardápio"></iframe>
+</div>

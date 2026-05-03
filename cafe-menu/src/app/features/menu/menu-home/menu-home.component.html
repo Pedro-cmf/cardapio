@@ -1,0 +1,87 @@
+<div *ngIf="loading(); else loaded" class="menu-loading">
+  <span class="spinner"></span>
+  <p>Carregando cardápio...</p>
+</div>
+
+<ng-template #loaded>
+  <div *ngIf="error(); else content" class="menu-error">
+    <p>😕 {{ error() }}</p>
+  </div>
+
+  <ng-template #content>
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-logo">
+        <img [src]="establishment()?.logo_url || 'assets/logo.png'" [alt]="establishment()?.name" />
+      </div>
+      <div class="hero-text">
+        <h1>{{ establishment()?.name }}</h1>
+        <p>Cafeteria · Cardápio</p>
+      </div>
+    </div>
+
+    <!-- NAV STICKY -->
+    <div class="nav-wrap">
+      <div class="nav-scroll" #navScroll>
+        <button
+          *ngFor="let cat of categories()"
+          class="nav-btn"
+          [class.active]="activeCategoryId() === cat.id"
+          (click)="scrollToCategory(cat.id)">
+          {{ cat.name }}
+        </button>
+      </div>
+    </div>
+
+    <!-- PAGE CONTENT -->
+    <div class="page">
+      <div
+        *ngFor="let cat of categories()"
+        class="section"
+        [id]="'sec-' + cat.id"
+        [attr.data-screen-label]="cat.name">
+
+        <h2 class="section-title">{{ cat.name }}</h2>
+
+        <!-- GRID layout (para categorias com poucos itens) -->
+        <div class="grid" *ngIf="cat.items && cat.items.length > 0 && cat.items.length <= 4">
+          <div *ngFor="let item of cat.items" class="item">
+            <div class="item-body">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-desc" *ngIf="item.description">{{ item.description }}</div>
+              <div class="item-price">{{ formatPrice(item.price) }}</div>
+            </div>
+            <div *ngIf="item.image_url; else placeholder" class="img-slot lg">
+              <img [src]="item.image_url" [alt]="item.name" />
+            </div>
+            <ng-template #placeholder>
+              <div class="img-slot lg"><span>foto</span></div>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- LIST layout (para categorias com muitos itens) -->
+        <div class="list" *ngIf="cat.items && cat.items.length > 4">
+          <div *ngFor="let item of cat.items" class="list-item">
+            <div *ngIf="item.image_url; else placeholderSm" class="img-slot sm">
+              <img [src]="item.image_url" [alt]="item.name" />
+            </div>
+            <ng-template #placeholderSm>
+              <div class="img-slot sm"><span>foto</span></div>
+            </ng-template>
+            <div class="list-item-left">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-desc" *ngIf="item.description">{{ item.description }}</div>
+            </div>
+            <div class="item-price">{{ formatPrice(item.price) }}</div>
+          </div>
+        </div>
+
+        <!-- NOTICE (se não houver itens) -->
+        <div *ngIf="!cat.items || cat.items.length === 0" class="notice">
+          Nenhum item nesta categoria no momento
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>

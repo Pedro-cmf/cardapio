@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Tal Clube do Café — Cardápio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green:  #1b3a23;
+  --green2: #243f2c;
+  --cream:  #f5edd8;
+  --cream2: #ece3cc;
+  --gold:   #c4a255;
+  --text:   #1a1208;
+  --muted:  #5c4f37;
+  --r: 6px;
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+/* HERO */
+.hero { background: var(--green); padding: 32px 20px 24px; display: flex; align-items: center; gap: 16px; }
+.hero-logo { width: 68px; height: 68px; flex-shrink: 0; border-radius: 4px; overflow: hidden; }
+.hero-logo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-text h1 { font-family: 'Cormorant Garamond', serif; color: var(--cream); font-size: 24px; font-weight: 700; line-height: 1.15; }
+.hero-text p { color: var(--gold); font-size: 11px; margin-top: 4px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; }
+
+/* NAV */
+.nav-wrap { background: var(--green); border-bottom: 1px solid rgba(196,162,85,0.25); position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 16px rgba(0,0,0,0.18); }
+.nav-scroll { display: flex; overflow-x: auto; scrollbar-width: none; padding: 0 12px; max-width: 960px; margin: 0 auto; gap: 2px; }
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-btn { background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(245,237,216,0.5); padding: 13px 11px; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.nav-btn:hover { color: var(--cream); }
+.nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* PAGE */
+.page { max-width: 960px; margin: 0 auto; padding: 28px 16px 72px; }
+
+/* SECTION */
+.section { margin-bottom: 44px; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: var(--green); letter-spacing: 0.03em; text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid var(--cream2); margin-bottom: 2px; }
+.section-subtitle { font-size: 10.5px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; margin-top: 16px; margin-bottom: 2px; padding: 0 4px; }
+
+/* IMAGE SLOT */
+.img-slot {
+  flex-shrink: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  background: repeating-linear-gradient(45deg, var(--cream2) 0, var(--cream2) 3px, #e8dfc8 3px, #e8dfc8 6px);
+  display: flex; align-items: center; justify-content: center;
+  border: 1px dashed #c8b990;
+}
+.img-slot span { font-size: 8px; color: #9a8a6a; font-family: monospace; text-align: center; line-height: 1.3; padding: 4px; }
+/* grid item image: taller */
+.img-slot.lg { width: 88px; height: 80px; }
+/* list item image: smaller */
+.img-slot.sm { width: 56px; height: 48px; }
+
+/* GRID */
+.grid { display: grid; grid-template-columns: 1fr 1fr; background: var(--cream2); gap: 1px; border: 1px solid var(--cream2); border-radius: var(--r); overflow: hidden; margin-top: 4px; }
+@media (max-width: 540px) { .grid { grid-template-columns: 1fr; } .hero-text h1 { font-size: 20px; } }
+.item { background: var(--cream); padding: 14px; display: flex; gap: 12px; align-items: flex-start; transition: background 0.12s; }
+.item:hover { background: #f0e6cf; }
+.item-body { flex: 1; min-width: 0; }
+.item-name { font-weight: 600; font-size: 13.5px; color: var(--text); line-height: 1.3; text-wrap: pretty; }
+.item-desc { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-wrap: pretty; }
+.item-price { font-weight: 700; font-size: 13px; color: var(--green); margin-top: 8px; }
+
+/* LIST */
+.list { background: var(--cream2); gap: 1px; border: 1px solid var(--cream2); border-radius: var(--r); overflow: hidden; margin-top: 4px; display: flex; flex-direction: column; }
+.list-item { background: var(--cream); padding: 12px 14px; display: flex; align-items: center; gap: 12px; transition: background 0.12s; }
+.list-item:hover { background: #f0e6cf; }
+.list-item-left { flex: 1; min-width: 0; }
+.list-item-left .item-name { font-size: 13.5px; font-weight: 600; }
+.list-item-left .item-desc { font-size: 11.5px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.list-item .item-price { white-space: nowrap; flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--green); }
+
+/* NOTICE */
+.notice { background: var(--green); color: var(--cream); padding: 14px 16px; border-radius: var(--r); margin-top: 4px; font-size: 12px; font-style: italic; line-height: 1.5; text-align: center; letter-spacing: 0.03em; opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-logo"><img src="logo.png" alt="Logo"></div>
+  <div class="hero-text">
+    <h1>O Tal Clube do Café</h1>
+    <p>Cafeteria · Cardápio</p>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-scroll" id="nav">
+    <button class="nav-btn active" onclick="go('bq')">Beb. Quentes</button>
+    <button class="nav-btn" onclick="go('metodos')">Métodos</button>
+    <button class="nav-btn" onclick="go('especiais')">Especiais</button>
+    <button class="nav-btn" onclick="go('geladas')">Geladas</button>
+    <button class="nav-btn" onclick="go('sucos')">Sucos</button>
+    <button class="nav-btn" onclick="go('refrescante')">Refrescante</button>
+    <button class="nav-btn" onclick="go('sanduiches')">Sanduíches</button>
+    <button class="nav-btn" onclick="go('toast')">Toast</button>
+    <button class="nav-btn" onclick="go('croissant')">Croissant</button>
+    <button class="nav-btn" onclick="go('outros')">Outros</button>
+    <button class="nav-btn" onclick="go('tapiocas')">Tapiocas</button>
+    <button class="nav-btn" onclick="go('cuscuz')">Cuscuz</button>
+    <button class="nav-btn" onclick="go('doces')">Doces</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- BEBIDAS QUENTES -->
+  <div class="section" id="bq" data-screen-label="Bebidas Quentes">
+    <h2 class="section-title">Bebidas Quentes</h2>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Espresso</div><div class="item-desc">Shot de 50ml</div></div>
+        <div class="item-price">R$8</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Espresso Duplo</div><div class="item-desc">Dois shots de espresso 60ml</div></div>
+        <div class="item-price">R$12</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Carioca</div><div class="item-desc">Espresso 30ml + shot de água quente</div></div>
+        <div class="item-price">R$8</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Macchiato</div><div class="item-desc">Espresso e espuma de leite vaporizado</div></div>
+        <div class="item-price">R$12</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÉTODOS -->
+  <div class="section" id="metodos" data-screen-label="Métodos">
+    <h2 class="section-title">Métodos</h2>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">O Tal Coado da Vovó</div><div class="item-desc">Bebida coada no pano com memória afetiva</div></div>
+        <div class="item-price">R$9</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Prensa Francesa</div><div class="item-desc">A prensa francesa atrai óleos naturais do café posicionando um sabor mais intenso — 150ml / 300ml</div></div>
+        <div class="item-price">R$13 / R$16</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">V-60</div><div class="item-desc">Método de altíssima qualidade, utilizado pelos japoneses, extração e apresentação impecável — 150ml / 300ml</div></div>
+        <div class="item-price">R$15 / R$18</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Chemex</div><div class="item-desc">Filtrada com papel espesso, café mais limpo e sem amargor, notas doces e delicadas — 300ml</div></div>
+        <div class="item-price">R$25</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEBIDAS ESPECIAIS -->
+  <div class="section" id="especiais" data-screen-label="Bebidas Especiais">
+    <h2 class="section-title">Bebidas Especiais</h2>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">O Tal do Cappuccino</div><div class="item-desc">Espresso, açúcar mascavo, especiarias e leite vaporizado</div></div>
+        <div class="item-price">R$18</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Cappuccino Italiano</div><div class="item-desc">Espresso e leite vaporizado cremoso</div></div>
+        <div class="item-price">R$16</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Cappuccino Avelã</div><div class="item-desc">Espresso e leite vaporizado cremoso, essência de avelã finalizado com cacau</div></div>
+        <div class="item-price">R$18</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Mocha</div><div class="item-desc">A irresistível combinação de café latte e chocolate</div></div>
+        <div class="item-price">R$20</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Chocolate Quente</div><div class="item-desc">Feito com puro chocolate, textura cremosa equilibrada e aconchegante</div></div>
+        <div class="item-price">R$22</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEBIDAS GELADAS -->
+  <div class="section" id="geladas" data-screen-label="Bebidas Geladas">
+    <h2 class="section-title">Bebidas Geladas</h2>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Frappuccino</div><div class="item-desc">Leite, café e cappuccino batidos com gelo, brigadeiro artesanal, chantilly e granulado de chocolate</div></div>
+        <div class="item-price">R$25</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Limãozinho</div><div class="item-desc">Água com gás, suco de limão, açúcar mascavo e espresso</div></div>
+        <div class="item-price">R$20</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Espresso Tônica</div><div class="item-desc">Água tônica, espresso e suco de laranja</div></div>
+        <div class="item-price">R$20</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Iced Latte Caramelo</div><div class="item-desc">Café gelado com toque de caramelo e leite. Doce na medida certa e refrescante</div></div>
+        <div class="item-price">R$20</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCOS -->
+  <div class="section" id="sucos" data-screen-label="Sucos da Casa">
+    <h2 class="section-title">Sucos da Casa</h2>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Kiwi, Limão e Hortelã</div></div>
+        <div class="item-price">R$16</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Tamarindo, Limão e Hortelã</div><div class="item-desc">Equilibrado, refrescante e delicioso</div></div>
+        <div class="item-price">R$15</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Cajá</div><div class="item-desc">Intenso, tropical</div></div>
+        <div class="item-price">R$15</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Manga</div><div class="item-desc">Tropical</div></div>
+        <div class="item-price">R$15</div>
+      </div>
+    </div>
+    <div class="section-subtitle">Água</div>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Água com ou sem gás</div><div class="item-desc">Garrafa / Vidro</div></div>
+        <div class="item-price">R$10</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFRESCANTE -->
+  <div class="section" id="refrescante" data-screen-label="Refrescante">
+    <h2 class="section-title">Refrescante</h2>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Creme de Cupuaçu</div><div class="item-desc">Purê de cupuaçu, iogurte, granola da casa, uva verde limonada e mel</div></div>
+        <div class="item-price">R$25</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Taça de Sorvete</div><div class="item-desc">Escolha entre: Calda de chocolate ou Espresso</div></div>
+        <div class="item-price">R$20</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Milk Shake Brownie e Brigadeiro</div><div class="item-desc">Brigadeiro cremoso, pedaços de brownie e chantilly</div></div>
+        <div class="item-price">R$26</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Sodas Limonadas</div><div class="item-desc">Limonada, Maçã Limonada ou Maçã Verde</div></div>
+        <div class="item-price">R$19</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SANDUÍCHES -->
+  <div class="section" id="sanduiches" data-screen-label="Sanduíches">
+    <h2 class="section-title">Sanduíches</h2>
+    <div class="grid">
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Misto Rústico</div>
+          <div class="item-desc">Pão de fermentação longa e natural, presunto, queijo, molho Bossé, cebola roxa e rúcula</div>
+          <div class="item-price">R$24</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Queijo Quente</div>
+          <div class="item-desc">Queijo trio com pão de fermentação natural, mix de queijos — acompanhado do nosso chutney de tomate</div>
+          <div class="item-price">R$25</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Croque Monsieur</div>
+          <div class="item-desc">Clássico francês com queijo, presunto, molho bechamel e parmesão gratinado, finalizado com salsa fresca</div>
+          <div class="item-price">R$35</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Croque Madame</div>
+          <div class="item-desc">Presunto, mussarela e bechamel gratinado no pão artesanal, finalizado com ovo de gema mole e balsa</div>
+          <div class="item-price">R$38</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="section" id="toast" data-screen-label="Toast">
+    <h2 class="section-title">Toast</h2>
+    <div class="grid">
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Toast Caprese</div>
+          <div class="item-desc">Pão de fermentação natural, molho de tomate caseiro, mussarela de búfala, tomate cereja e manjericão</div>
+          <div class="item-price">R$26</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Toast Mortadela Ouro</div>
+          <div class="item-desc">Pão de fermentação natural, pesto da casa, mortadela ouro e queijo mussarela</div>
+          <div class="item-price">R$27</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Toast Agridoce</div>
+          <div class="item-desc">Pão de fermentação natural, geleia artesanal de bacon, requeijão cremoso e um toque de melaço</div>
+          <div class="item-price">R$28</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CROISSANT -->
+  <div class="section" id="croissant" data-screen-label="Croissant">
+    <h2 class="section-title">Croissant</h2>
+    <div class="section-subtitle">Salgados</div>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Croissant Tradicional</div><div class="item-desc">+ Manteiga</div></div>
+        <div class="item-price">R$18</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Croissant Americano</div><div class="item-desc">Ovos e queijo</div></div>
+        <div class="item-price">R$25</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Croissant Caprese</div><div class="item-desc">Leitão, pesto, peito de peru, mussarela e tomate cereja</div></div>
+        <div class="item-price">R$33</div>
+      </div>
+    </div>
+    <div class="section-subtitle">Doces</div>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Croissant Frutas do Bosque</div><div class="item-desc">Gelato de frutas vermelhas artesanal e compota</div></div>
+        <div class="item-price">R$26</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Croissant Nutella</div><div class="item-desc">Com amêndoas laminadas</div></div>
+        <div class="item-price">R$25</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Croissant Pistache</div><div class="item-desc">Creme de pistache finalizado com castanha de pistache triturada</div></div>
+        <div class="item-price">R$36</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OMELETE + PÃO DE QUEIJO -->
+  <div class="section" id="outros" data-screen-label="Omelete e Pão de Queijo">
+    <h2 class="section-title">Omelete &amp; Pão de Queijo</h2>
+    <div class="grid">
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Omelete Recheada Leve</div>
+          <div class="item-desc">Omelete com peito de peru e mussarela, tomate cereja, finalizado no pão artesanal</div>
+          <div class="item-price">R$28</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">O Tal do Queijim</div>
+          <div class="item-desc">Pão de queijo artesanal em formato waffer: textura leve, crocante e irresistível. Acompanha requeijão cremoso e doce de leite mineiro</div>
+          <div class="item-price">R$20</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAPIOCAS -->
+  <div class="section" id="tapiocas" data-screen-label="Tapiocas">
+    <h2 class="section-title">Tapiocas</h2>
+    <div class="grid">
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Carne de Sol na Nata</div>
+          <div class="item-desc">Tapioca recheada com carne de sol ao creme de nata</div>
+          <div class="item-price">R$25</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+      <div class="item">
+        <div class="item-body">
+          <div class="item-name">Peito de Peru e Mussarela</div>
+          <div class="item-desc">Tapioca recheada com peito de peru e queijo mussarela</div>
+          <div class="item-price">R$22</div>
+        </div>
+        <div class="img-slot lg"><span>foto</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMBINHO + CUSCUZ -->
+  <div class="section" id="cuscuz" data-screen-label="Combinho e Cuscuz">
+    <h2 class="section-title">Combinho &amp; Cuscuz</h2>
+    <div class="section-subtitle">Combinho do Clube</div>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Combinho do Clube</div><div class="item-desc">Ovos cremosos com queijo parmesão polvilhado, fatia de pão de fermentação natural e bacon fatiado</div></div>
+        <div class="item-price">R$27</div>
+      </div>
+    </div>
+    <div class="section-subtitle">Cuscuz</div>
+    <div class="list">
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Cuscuz com Creme de Queijo</div><div class="item-desc">Cuscuz com creme de queijo, finalizado com parmesão polvilhado</div></div>
+        <div class="item-price">R$26</div>
+      </div>
+      <div class="list-item">
+        <div class="img-slot sm"><span>foto</span></div>
+        <div class="list-item-left"><div class="item-name">Cuscuz com Carne de Sol na Nata</div><div class="item-desc">Cuscuz com creme de carne de sol na nata</div></div>
+        <div class="item-price">R$29</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCES -->
+  <div class="section" id="doces" data-screen-label="Doces">
+    <h2 class="section-title">Doces</h2>
+    <div class="notice">Brownie, Cookie, Bolo do Dia e outros doces —<br>confira na vitrine e balcão a disponibilidade e sabores do dia</div>
+    <div class="section-subtitle" style="margin-top:14px">Tortas</div>
+    <div class="notice">Confira na vitrine os sabores da semana</div>
+  </div>
+
+</div>
+
+<script>
+function go(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.querySelector('.nav-wrap').offsetHeight;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navH - 14, behavior: 'smooth' });
+}
+const ids = ['bq','metodos','especiais','geladas','sucos','refrescante','sanduiches','toast','croissant','outros','tapiocas','cuscuz','doces'];
+const btns = document.querySelectorAll('.nav-btn');
+function updateActive() {
+  const off = document.querySelector('.nav-wrap').offsetHeight + 20;
+  let cur = 0;
+  ids.forEach((id, i) => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= off) cur = i; });
+  btns.forEach((b, i) => b.classList.toggle('active', i === cur));
+  const btn = btns[cur];
+  if (btn) { const nav = document.querySelector('.nav-scroll'); nav.scrollTo({ left: btn.offsetLeft - nav.clientWidth/2 + btn.clientWidth/2, behavior: 'smooth' }); }
+}
+window.addEventListener('scroll', updateActive, { passive: true });
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="logo-icon">☕</span>
+      <h1>Painel Admin</h1>
+      <p>Acesse para gerenciar o cardápio</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="field-group">
+        <label for="email">E-mail</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="seu@email.com"
+          autocomplete="email"
+        />
+        <span class="field-error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+          E-mail inválido
+        </span>
+      </div>
+
+      <div class="field-group">
+        <label for="password">Senha</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+        <span class="field-error" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+          Senha muito curta
+        </span>
+      </div>
+
+      <div class="error-banner" *ngIf="errorMsg()">
+        {{ errorMsg() }}
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </form>
+  </div>
+</div>

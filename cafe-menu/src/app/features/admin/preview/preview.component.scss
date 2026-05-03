@@ -1,0 +1,134 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--color-primary);
+    margin: 0;
+  }
+}
+
+.preview-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.view-toggle {
+  display: flex;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    background: white;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+
+    &:not(:last-child) {
+      border-right: 2px solid var(--border-color);
+    }
+
+    &.active {
+      background: var(--color-accent);
+      color: var(--color-primary);
+    }
+
+    &:hover:not(.active) {
+      background: var(--cream2);
+    }
+  }
+}
+
+.btn-refresh {
+  padding: 10px 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  background: white;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+
+  &:hover {
+    background: var(--cream2);
+  }
+}
+
+.preview-container {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 200px);
+
+  iframe {
+    width: 100%;
+    height: calc(100vh - 240px);
+    border-radius: 8px;
+    background: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  &.mobile-view {
+    iframe {
+      width: 390px;
+      max-width: 100%;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .preview-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .preview-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .view-toggle {
+    flex: 1;
+
+    button {
+      flex: 1;
+    }
+  }
+
+  .btn-refresh {
+    flex: 1;
+  }
+
+  .preview-container {
+    padding: 10px;
+
+    &.mobile-view iframe {
+      width: 100%;
+    }
+  }
+}
