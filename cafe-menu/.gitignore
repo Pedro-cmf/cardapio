@@ -41,7 +41,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Environment variables
+# Environment variables (precaução, não usados neste projeto)
 .env
 .env.local
 .env.*.local
