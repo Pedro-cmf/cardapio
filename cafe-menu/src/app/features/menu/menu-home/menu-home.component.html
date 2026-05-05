@@ -59,7 +59,7 @@
 
         <!-- CARDS com foto grande -->
         <div class="cards-grid" *ngIf="cat.items && cat.items.length > 0">
-          <div *ngFor="let item of cat.items" class="item-card">
+          <div *ngFor="let item of cat.items" class="item-card" (click)="openItem(item)">
             <!-- Foto em destaque -->
             <div class="item-photo">
               <img
@@ -67,6 +67,7 @@
                 [src]="item.image_url"
                 [alt]="item.name"
                 loading="lazy"
+                [style.object-position]="item.image_position || 'center center'"
               />
               <div *ngIf="!item.image_url" class="item-photo-placeholder">
                 <span>✦</span>
@@ -105,3 +106,40 @@
     </div>
   </ng-template>
 </ng-template>
+
+<!-- MODAL DE ITEM -->
+<div *ngIf="selectedItem()" class="item-modal-backdrop" (click)="closeItem()">
+  <div class="item-modal" (click)="$event.stopPropagation()">
+    <button class="item-modal-close" (click)="closeItem()" aria-label="Fechar">✕</button>
+
+    <div class="item-modal-photo" *ngIf="selectedItem()!.image_url">
+      <img
+        [src]="selectedItem()!.image_url"
+        [alt]="selectedItem()!.name"
+        [style.object-position]="selectedItem()!.image_position || 'center center'"
+      />
+    </div>
+    <div class="item-modal-photo item-modal-photo--placeholder" *ngIf="!selectedItem()!.image_url">
+      <span>✦</span>
+    </div>
+
+    <div class="item-modal-body">
+      <div class="item-modal-name">{{ selectedItem()!.name }}</div>
+
+      <div class="item-modal-desc" *ngIf="selectedItem()!.description">
+        {{ selectedItem()!.description }}
+      </div>
+
+      <div class="item-modal-footer">
+        <div *ngIf="selectedItem()!.is_promotion && selectedItem()!.promotion_price; else normalPrice" class="item-modal-promo">
+          <span class="item-modal-price-original">{{ formatPrice(selectedItem()!.price) }}</span>
+          <span class="promo-label">Promoção</span>
+          <span class="item-modal-price-promo">{{ formatPrice(selectedItem()!.promotion_price!) }}</span>
+        </div>
+        <ng-template #normalPrice>
+          <div class="item-modal-price">{{ formatPrice(selectedItem()!.price) }}</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

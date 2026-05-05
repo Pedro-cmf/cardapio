@@ -4,7 +4,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
-import { Establishment, Category } from '../../../core/models';
+import { Establishment, Category, MenuItem } from '../../../core/models';
 
 @Component({
   selector: 'app-menu-home',
@@ -24,6 +24,7 @@ export class MenuHomeComponent implements OnInit, AfterViewInit {
   loading = signal(true);
   error = signal('');
   activeCategoryId = signal('');
+  selectedItem = signal<MenuItem | null>(null);
 
   async ngOnInit() {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
@@ -90,6 +91,16 @@ export class MenuHomeComponent implements OnInit, AfterViewInit {
       top: el.getBoundingClientRect().top + window.scrollY - navH - 14,
       behavior: 'smooth'
     });
+  }
+
+  openItem(item: MenuItem) {
+    this.selectedItem.set(item);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeItem() {
+    this.selectedItem.set(null);
+    document.body.style.overflow = '';
   }
 
   formatPrice(value: number): string {
