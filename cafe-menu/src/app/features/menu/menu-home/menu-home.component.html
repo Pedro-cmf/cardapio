@@ -5,18 +5,30 @@
 
 <ng-template #loaded>
   <div *ngIf="error(); else content" class="menu-error">
-    <p>😕 {{ error() }}</p>
+    <p>{{ error() }}</p>
   </div>
 
   <ng-template #content>
     <!-- HERO -->
     <div class="hero">
-      <div class="hero-logo">
-        <img [src]="establishment()?.logo_url || 'assets/logo.png'" [alt]="establishment()?.name" />
-      </div>
-      <div class="hero-text">
-        <h1>{{ establishment()?.name }}</h1>
-        <p>Cafeteria · Cardápio</p>
+      <div class="hero-frame">
+        <div class="hero-top">
+          <span class="line"></span>
+          <span class="est">Cafeteria</span>
+          <span class="line"></span>
+        </div>
+        <div class="hero-content">
+          <div class="hero-logo">
+            <img [src]="establishment()?.logo_url || 'assets/logo.png'" [alt]="establishment()?.name" />
+          </div>
+          <div class="hero-text">
+            <h1>{{ establishment()?.name }}</h1>
+            <div class="hero-tagline">Aqui, o café é levado a sério. ☕️</div>
+          </div>
+          <div class="hero-meta">
+            <span>Cardápio</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -38,49 +50,57 @@
       <div
         *ngFor="let cat of categories()"
         class="section"
-        [id]="'sec-' + cat.id"
-        [attr.data-screen-label]="cat.name">
+        [id]="'sec-' + cat.id">
 
-        <h2 class="section-title">{{ cat.name }}</h2>
+        <div class="section-header">
+          <h2 class="section-title">{{ cat.name }}</h2>
+          <div class="section-ornament">✦ ✦ ✦</div>
+        </div>
 
-        <!-- GRID layout (para categorias com poucos itens) -->
-        <div class="grid" *ngIf="cat.items && cat.items.length > 0 && cat.items.length <= 4">
-          <div *ngFor="let item of cat.items" class="item">
+        <!-- CARDS com foto grande -->
+        <div class="cards-grid" *ngIf="cat.items && cat.items.length > 0">
+          <div *ngFor="let item of cat.items" class="item-card">
+            <!-- Foto em destaque -->
+            <div class="item-photo">
+              <img
+                *ngIf="item.image_url"
+                [src]="item.image_url"
+                [alt]="item.name"
+                loading="lazy"
+              />
+              <div *ngIf="!item.image_url" class="item-photo-placeholder">
+                <span>✦</span>
+              </div>
+            </div>
+            <!-- Info -->
             <div class="item-body">
               <div class="item-name">{{ item.name }}</div>
               <div class="item-desc" *ngIf="item.description">{{ item.description }}</div>
-              <div class="item-price">{{ formatPrice(item.price) }}</div>
+              <div class="item-footer">
+                <div class="item-price">{{ formatPrice(item.price) }}</div>
+                <div *ngIf="item.is_promotion && item.promotion_price" class="item-promo">
+                  <span class="promo-label">Promoção</span>
+                  <span class="promo-price">{{ formatPrice(item.promotion_price) }}</span>
+                </div>
+              </div>
             </div>
-            <div *ngIf="item.image_url; else placeholder" class="img-slot lg">
-              <img [src]="item.image_url" [alt]="item.name" />
-            </div>
-            <ng-template #placeholder>
-              <div class="img-slot lg"><span>foto</span></div>
-            </ng-template>
           </div>
         </div>
 
-        <!-- LIST layout (para categorias com muitos itens) -->
-        <div class="list" *ngIf="cat.items && cat.items.length > 4">
-          <div *ngFor="let item of cat.items" class="list-item">
-            <div *ngIf="item.image_url; else placeholderSm" class="img-slot sm">
-              <img [src]="item.image_url" [alt]="item.name" />
-            </div>
-            <ng-template #placeholderSm>
-              <div class="img-slot sm"><span>foto</span></div>
-            </ng-template>
-            <div class="list-item-left">
-              <div class="item-name">{{ item.name }}</div>
-              <div class="item-desc" *ngIf="item.description">{{ item.description }}</div>
-            </div>
-            <div class="item-price">{{ formatPrice(item.price) }}</div>
-          </div>
-        </div>
-
-        <!-- NOTICE (se não houver itens) -->
         <div *ngIf="!cat.items || cat.items.length === 0" class="notice">
           Nenhum item nesta categoria no momento
         </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class="footer-divider">
+          <span class="line"></span>
+          <span class="ornament">✦ ✦ ✦</span>
+          <span class="line"></span>
+        </div>
+        <div class="footer-text">obrigado pela visita</div>
+        <div class="footer-sub">{{ establishment()?.name }}</div>
       </div>
     </div>
   </ng-template>
