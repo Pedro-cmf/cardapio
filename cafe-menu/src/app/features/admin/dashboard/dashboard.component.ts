@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   establishments = signal<Establishment[]>([]);
   selected = signal<Establishment | null>(null);
   currentPage = 'Visão Geral';
+  sidebarOpen = signal(false);
 
   async ngOnInit() {
     try {
@@ -30,5 +31,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  logout() { this.auth.signOut(); }
+  toggleSidebar() { this.sidebarOpen.update(v => !v); }
+  closeSidebar()  { this.sidebarOpen.set(false); }
+  logout()        { this.auth.signOut(); }
 }

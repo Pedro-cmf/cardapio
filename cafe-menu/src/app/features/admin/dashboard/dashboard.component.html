@@ -1,15 +1,23 @@
+<!-- OVERLAY mobile -->
+<div
+  class="sidebar-overlay"
+  [class.visible]="sidebarOpen()"
+  (click)="closeSidebar()">
+</div>
+
 <!-- SIDEBAR -->
-<aside class="admin-sidebar">
+<aside class="admin-sidebar" [class.open]="sidebarOpen()">
   <div class="sidebar-brand">
     <img src="assets/logo.png" alt="Logo">
     <div class="sidebar-brand-text">
       <strong>O Tal Clube do Café</strong>
       <span>Administração</span>
     </div>
+    <button class="sidebar-close" (click)="closeSidebar()" aria-label="Fechar menu">✕</button>
   </div>
 
   <nav class="admin-nav">
-    <button class="nav-item" routerLink="/admin/overview" routerLinkActive="active">
+    <button class="nav-item" routerLink="/admin/overview" routerLinkActive="active" (click)="closeSidebar()">
       <svg viewBox="0 0 16 16" fill="currentColor">
         <rect x="1" y="1" width="6" height="6" rx="1"/>
         <rect x="9" y="1" width="6" height="6" rx="1"/>
@@ -18,7 +26,7 @@
       </svg>
       Visão Geral
     </button>
-    <button class="nav-item" routerLink="/admin/categories" routerLinkActive="active">
+    <button class="nav-item" routerLink="/admin/categories" routerLinkActive="active" (click)="closeSidebar()">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <rect x="1.5" y="1.5" width="13" height="13" rx="2"/>
         <line x1="1.5" y1="6" x2="14.5" y2="6"/>
@@ -26,7 +34,7 @@
       </svg>
       Categorias
     </button>
-    <button class="nav-item" routerLink="/admin/items" routerLinkActive="active">
+    <button class="nav-item" routerLink="/admin/items" routerLinkActive="active" (click)="closeSidebar()">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <circle cx="8" cy="8" r="6.5"/>
         <line x1="8" y1="4.5" x2="8" y2="11.5"/>
@@ -34,7 +42,7 @@
       </svg>
       Itens
     </button>
-    <button class="nav-item" routerLink="/admin/qrcode" routerLinkActive="active">
+    <button class="nav-item" routerLink="/admin/qrcode" routerLinkActive="active" (click)="closeSidebar()">
       <svg viewBox="0 0 16 16" fill="currentColor">
         <rect x="1" y="1" width="6" height="6" rx="0.5"/>
         <rect x="2.5" y="2.5" width="3" height="3"/>
@@ -49,7 +57,7 @@
       </svg>
       QR Code
     </button>
-    <button class="nav-item" routerLink="/admin/preview" routerLinkActive="active">
+    <button class="nav-item" routerLink="/admin/preview" routerLinkActive="active" (click)="closeSidebar()">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <rect x="1.5" y="3.5" width="13" height="9" rx="1"/>
         <line x1="5" y1="6.5" x2="11" y2="6.5"/>
@@ -67,6 +75,11 @@
 <!-- MAIN -->
 <main class="admin-main">
   <div class="topbar">
+    <button class="hamburger" (click)="toggleSidebar()" aria-label="Abrir menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
     <span class="topbar-title">{{ currentPage }}</span>
     <a href="/menu/cafe-clube" target="_blank" class="topbar-link">Ver Cardápio</a>
   </div>
