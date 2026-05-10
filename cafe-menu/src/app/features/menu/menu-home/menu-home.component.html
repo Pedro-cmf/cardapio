@@ -67,7 +67,6 @@
                 [src]="item.image_url"
                 [alt]="item.name"
                 loading="lazy"
-                [style.object-position]="item.image_position || 'center center'"
               />
               <div *ngIf="!item.image_url" class="item-photo-placeholder">
                 <span>✦</span>
@@ -116,8 +115,7 @@
       <img
         [src]="selectedItem()!.image_url"
         [alt]="selectedItem()!.name"
-        [style.object-position]="selectedItem()!.image_position || 'center center'"
-      />
+        />
     </div>
     <div class="item-modal-photo item-modal-photo--placeholder" *ngIf="!selectedItem()!.image_url">
       <span>✦</span>
